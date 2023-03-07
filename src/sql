@@ -1,0 +1,74 @@
+Вы подключены к базе данных "skypro" как пользователь "postgres".
+skypro=# CREATE TABLE employee (
+skypro(# id BIGSERIAL NOT NULL PRIMARY KEY,
+skypro(# first_name VARCHAR(50) NOT NULL,
+skypro(# last_name VARCHAR(50) NOT NULL,
+skypro(# gender VARCHAR(6) NOT NULL,
+skypro(# age INT NOT NULL
+skypro(# );
+CREATE TABLE
+skypro=# SELECT * FROM employee;
+ id | first_name | last_name | gender | age
+----+------------+-----------+--------+-----
+(0 ёЄЁюъ)
+
+
+skypro=# INSERT INTO EMPLOYEE(
+skypro(# first_name, last_name, gender, age)
+skypro-# VALUES ('Svetlana', 'Viktorova', 'f', 30);
+INSERT 0 1
+skypro=# SELECT * FROM employee;
+ id | first_name | last_name | gender | age
+----+------------+-----------+--------+-----
+  1 | Svetlana   | Viktorova | f      |  30
+(1 ёЄЁюър)
+
+
+skypro=# INSERT INTO employee (
+skypro(# first_name, last_name, gender, age)
+skypro-# VALUES ('Viktor', 'Solovyov', 'm', 29),
+skypro-# ('Marina', 'Lunina', 'f', 25),
+skypro-# ('Vladimir', 'Kulakov', 'm', 23);
+INSERT 0 3
+skypro=# SELECT * FROM employee;
+ id | first_name | last_name | gender | age
+----+------------+-----------+--------+-----
+  1 | Svetlana   | Viktorova | f      |  30
+  2 | Viktor     | Solovyov  | m      |  29
+  3 | Marina     | Lunina    | f      |  25
+  4 | Vladimir   | Kulakov   | m      |  23
+(4 ёЄЁюъш)
+
+
+skypro=# UPDATE empoyee SET first_name = 'Elena' WHERE id = 1;
+ОШИБКА:  отношение "empoyee" не существует
+СТРОКА 1: UPDATE empoyee SET first_name = 'Elena' WHERE id = 1;
+                 ^
+skypro=# UPDATE employee SET first_name = 'Elena' WHERE id = 1;
+UPDATE 1
+skypro=# UPDATE employee SET last_name = 'Prochorova' WHERE id = 1;
+UPDATE 1
+skypro=# UPDATE employee SET age = 30 WHERE id = 1;
+UPDATE 1
+skypro=# SELECT * FROM employee;
+ id | first_name | last_name  | gender | age
+----+------------+------------+--------+-----
+  2 | Viktor     | Solovyov   | m      |  29
+  3 | Marina     | Lunina     | f      |  25
+  4 | Vladimir   | Kulakov    | m      |  23
+  1 | Elena      | Prochorova | f      |  30
+(4 ёЄЁюъш)
+
+
+skypro=# DELETE FROM employee WHERE id = 1;
+DELETE 1
+skypro=# SELECT * FROM employee;
+ id | first_name | last_name | gender | age
+----+------------+-----------+--------+-----
+  2 | Viktor     | Solovyov  | m      |  29
+  3 | Marina     | Lunina    | f      |  25
+  4 | Vladimir   | Kulakov   | m      |  23
+(3 ёЄЁюъш)
+
+
+skypro=#

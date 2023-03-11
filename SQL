@@ -1,0 +1,157 @@
+skypro=# SELECT * FROM employee;
+ id | first_name | last_name | gender | age
+----+------------+-----------+--------+-----
+  2 | Viktor     | Solovyov  | m      |  29
+  3 | Marina     | Lunina    | f      |  25
+  4 | Vladimir   | Kulakov   | m      |  23
+  5 | Olesya     | Dorokhova | f      |  18
+  6 | Sergey     | Molotov   | m      |  20
+  7 | Fedor      | Lenin     | m      |  40
+  8 | Yana       | Ryabina   | f      |  46
+(7 ёЄЁюъ)
+
+
+skypro=# SELECT
+skypro-# first_name AS Имя, last_name AS Фамилия
+skypro-# FROM employee;
+   Имя    |  Фамилия
+----------+-----------
+ Viktor   | Solovyov
+ Marina   | Lunina
+ Vladimir | Kulakov
+ Olesya   | Dorokhova
+ Sergey   | Molotov
+ Fedor    | Lenin
+ Yana     | Ryabina
+(7 ёЄЁюъ)
+
+
+skypro=# SELECT * FROM employee
+skypro-# WHERE age < 30;
+ id | first_name | last_name | gender | age
+----+------------+-----------+--------+-----
+  2 | Viktor     | Solovyov  | m      |  29
+  3 | Marina     | Lunina    | f      |  25
+  4 | Vladimir   | Kulakov   | m      |  23
+  5 | Olesya     | Dorokhova | f      |  18
+  6 | Sergey     | Molotov   | m      |  20
+(5 ёЄЁюъ)
+
+
+skypro=# SELECT * FROM employee
+skypro-# WHERE age BETWEEN 30 AND 50;
+ id | first_name | last_name | gender | age
+----+------------+-----------+--------+-----
+  7 | Fedor      | Lenin     | m      |  40
+  8 | Yana       | Ryabina   | f      |  46
+(2 ёЄЁюъш)
+
+
+skypro=# SELECT * FROM employee
+skypro-# ORDER BY last_name DESC;
+ id | first_name | last_name | gender | age
+----+------------+-----------+--------+-----
+  2 | Viktor     | Solovyov  | m      |  29
+  8 | Yana       | Ryabina   | f      |  46
+  6 | Sergey     | Molotov   | m      |  20
+  3 | Marina     | Lunina    | f      |  25
+  7 | Fedor      | Lenin     | m      |  40
+  4 | Vladimir   | Kulakov   | m      |  23
+  5 | Olesya     | Dorokhova | f      |  18
+(7 ёЄЁюъ)
+
+
+skypro=#  SELECT * FROM employee
+skypro-# WHERE LENGTH(first_name) > 4;
+ id | first_name | last_name | gender | age
+----+------------+-----------+--------+-----
+  2 | Viktor     | Solovyov  | m      |  29
+  3 | Marina     | Lunina    | f      |  25
+  4 | Vladimir   | Kulakov   | m      |  23
+  5 | Olesya     | Dorokhova | f      |  18
+  6 | Sergey     | Molotov   | m      |  20
+  7 | Fedor      | Lenin     | m      |  40
+(6 ёЄЁюъ)
+
+
+skypro=# DELETE FROM employee
+skypro-# WHERE id = 7;
+DELETE 1
+skypro=# SELECT * FROM employee;
+ id | first_name | last_name | gender | age | skypro
+----+------------+-----------+--------+-----+--------
+  2 | Viktor     | Solovyov  | m      |  29 |
+  3 | Marina     | Lunina    | f      |  25 |
+  4 | Vladimir   | Kulakov   | m      |  23 |
+  5 | Olesya     | Dorokhova | f      |  18 |
+  6 | Sergey     | Molotov   | m      |  20 |
+  8 | Yana       | Ryabina   | f      |  46 |
+(6 ёЄЁюъ)
+
+
+skypro=#  DELETE FROM employee
+skypro-# WHERE id = 8;
+DELETE 1
+skypro=# SELECT * FROM employee;
+ id | first_name | last_name | gender | age | skypro
+----+------------+-----------+--------+-----+--------
+  2 | Viktor     | Solovyov  | m      |  29 |
+  3 | Marina     | Lunina    | f      |  25 |
+  4 | Vladimir   | Kulakov   | m      |  23 |
+  5 | Olesya     | Dorokhova | f      |  18 |
+  6 | Sergey     | Molotov   | m      |  20 |
+(5 ёЄЁюъ)
+
+
+skypro=# UPDATE employee SET first_name = 'Viktor'
+skypro-# WHERE id = 4;
+UPDATE 1
+skypro=#  UPDATE employee SET first_name = 'Marina'
+skypro-# WHERE id = 5;
+UPDATE 1
+skypro=# SELECT * FROM employee;
+ id | first_name | last_name | gender | age | skypro
+----+------------+-----------+--------+-----+--------
+  2 | Viktor     | Solovyov  | m      |  29 |
+  3 | Marina     | Lunina    | f      |  25 |
+  6 | Sergey     | Molotov   | m      |  20 |
+  4 | Viktor     | Kulakov   | m      |  23 |
+  5 | Marina     | Dorokhova | f      |  18 |
+(5 ёЄЁюъ)
+
+
+skypro=# SELECT first_name AS Имя,
+skypro-# SUM(age) AS Суммарный_возраст
+skypro-# FROM employee
+skypro-# GROUP BY Имя;
+  Имя   | Суммарный_возраст
+--------+-------------------
+ Viktor |                52
+ Sergey |                20
+ Marina |                43
+(3 ёЄЁюъш)
+
+
+skypro=# SELECT first_name, age
+skypro-# FROM employee
+skypro-# WHERE age = (
+skypro(# SELECT MIN(age)
+skypro(# FROM employee
+skypro(# );
+ first_name | age
+------------+-----
+ Marina     |  18
+(1 ёЄЁюър)
+
+
+skypro=# SELECT first_name, age
+skypro-# FROM employee
+skypro-# WHERE NOT first_name = 'Sergey'
+skypro-# ORDER BY age;
+ first_name | age
+------------+-----
+ Marina     |  18
+ Viktor     |  23
+ Marina     |  25
+ Viktor     |  29
+(4 ёЄЁюъш)

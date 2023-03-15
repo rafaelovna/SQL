@@ -146,13 +146,8 @@ skypro(# );
 
 skypro=# SELECT first_name, MAX(age)
 skypro-# FROM employee
-skypro-# WHERE first_name IN (
-skypro(# SELECT first_name
-skypro(# FROM employee
 skypro(# GROUP BY first_name
-skypro(# HAVING COUNT(*) > 1
-skypro(# )
-skypro-# GROUP BY first_name
+skypro(# HAVING COUNT(first_name) > 1
 skypro-# ORDER BY MAX(age);
  first_name | max
 ------------+-----

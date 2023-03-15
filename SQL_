@@ -1,0 +1,197 @@
+skypro=# SELECT * FROM employee;
+ id | first_name | last_name | gender | age | skypro
+----+------------+-----------+--------+-----+--------
+  2 | Viktor     | Solovyov  | m      |  29 |
+  3 | Marina     | Lunina    | f      |  25 |
+  6 | Sergey     | Molotov   | m      |  20 |
+  4 | Viktor     | Kulakov   | m      |  23 |
+  5 | Marina     | Dorokhova | f      |  18 |
+(5 ёЄЁюъ)
+
+
+skypro=# CREATE TABLE city (
+skypro(# city_id BIGSERIAL NOT NULL PRIMARY KEY,
+skypro(# city_name VARCHAR(60)
+skypro(# );
+CREATE TABLE
+skypro=# ALTER TABLE employee ADD COLUMN city_id BIGINT REFERENCES city(city_id);
+ALTER TABLE
+skypro=# SELECT * FROM employee;
+ id | first_name | last_name | gender | age | skypro | city_id
+----+------------+-----------+--------+-----+--------+---------
+  2 | Viktor     | Solovyov  | m      |  29 |        |
+  3 | Marina     | Lunina    | f      |  25 |        |
+  6 | Sergey     | Molotov   | m      |  20 |        |
+  4 | Viktor     | Kulakov   | m      |  23 |        |
+  5 | Marina     | Dorokhova | f      |  18 |        |
+(5 ёЄЁюъ)
+
+
+skypro=#  ALTER TABLE employee DROP COLUMN skypro;
+ALTER TABLE
+skypro=# SELECT * FROM employee;
+ id | first_name | last_name | gender | age | city_id
+----+------------+-----------+--------+-----+---------
+  2 | Viktor     | Solovyov  | m      |  29 |
+  3 | Marina     | Lunina    | f      |  25 |
+  6 | Sergey     | Molotov   | m      |  20 |
+  4 | Viktor     | Kulakov   | m      |  23 |
+  5 | Marina     | Dorokhova | f      |  18 |
+(5 ёЄЁюъ)
+
+
+skypro=# INSERT INTO city(
+skypro(# city_name)
+skypro-# VALUES('Moskva'),
+skypro-# ('Samara'),
+skypro-# ('Kursk');
+INSERT 0 3
+skypro=# SELECT * FROM city;
+ city_id | city_name
+---------+-----------
+       1 | Moskva
+       2 | Samara
+       3 | Kursk
+(3 ёЄЁюъш)
+
+
+skypro=# UPDATE employee SET city_id = 1
+skypro-# WHERE id = 2;
+UPDATE 1
+skypro=# UPDATE employee SET city_id = 2
+skypro-# WHERE id = 3;
+UPDATE 1
+skypro=#  UPDATE employee SET city_id = 3
+skypro-# WHERE id > 3 AND id < 6;
+UPDATE 2
+skypro=# SELECT * FROM employee;
+ id | first_name | last_name | gender | age | city_id
+----+------------+-----------+--------+-----+---------
+  6 | Sergey     | Molotov   | m      |  20 |
+  2 | Viktor     | Solovyov  | m      |  29 |       1
+  3 | Marina     | Lunina    | f      |  25 |       2
+  4 | Viktor     | Kulakov   | m      |  23 |       3
+  5 | Marina     | Dorokhova | f      |  18 |       3
+(5 ёЄЁюъ)
+
+
+skypro=#  UPDATE employee SET city_id = 1
+skypro-# WHERE id = 6;
+UPDATE 1
+skypro=#  SELECT * FROM employee;
+ id | first_name | last_name | gender | age | city_id
+----+------------+-----------+--------+-----+---------
+  2 | Viktor     | Solovyov  | m      |  29 |       1
+  3 | Marina     | Lunina    | f      |  25 |       2
+  4 | Viktor     | Kulakov   | m      |  23 |       3
+  5 | Marina     | Dorokhova | f      |  18 |       3
+  6 | Sergey     | Molotov   | m      |  20 |       1
+(5 ёЄЁюъ)
+
+
+skypro=# SELECT first_name, last_name, city_name
+skypro-# FROM employee
+skypro-# INNER JOIN city
+skypro-# ON employee.city_id = city.city_id;
+ first_name | last_name | city_name
+------------+-----------+-----------
+ Viktor     | Solovyov  | Moskva
+ Marina     | Lunina    | Samara
+ Viktor     | Kulakov   | Kursk
+ Marina     | Dorokhova | Kursk
+ Sergey     | Molotov   | Moskva
+(5 ёЄЁюъ)
+
+
+skypro=#  INSERT INTO city(
+skypro(# city_name)
+skypro-# VALUES('Volgograd');
+INSERT 0 1
+skypro=# SELECT *FROM city
+skypro-# ;
+ city_id | city_name
+---------+-----------
+       1 | Moskva
+       2 | Samara
+       3 | Kursk
+       4 | Volgograd
+(4 ёЄЁюъш)
+
+
+skypro=#  INSERT INTO employee(
+skypro(# first_name, last_name, gender, age)
+skypro-# VALUES('Aleksandr', 'Aleksandrov', 'm', 50);
+INSERT 0 1
+skypro=# SELECT * FROM employee;
+ id | first_name |  last_name  | gender | age | city_id
+----+------------+-------------+--------+-----+---------
+  2 | Viktor     | Solovyov    | m      |  29 |       1
+  3 | Marina     | Lunina      | f      |  25 |       2
+  4 | Viktor     | Kulakov     | m      |  23 |       3
+  5 | Marina     | Dorokhova   | f      |  18 |       3
+  6 | Sergey     | Molotov     | m      |  20 |       1
+  9 | Aleksandr  | Aleksandrov | m      |  50 |
+(6 ёЄЁюъ)
+
+
+skypro=# SELECT city_name, first_name, last_name
+skypro-# FROM employee
+skypro-# LEFT JOIN city
+skypro-# ON employee.city_id = city.city_id;
+ city_name | first_name |  last_name
+-----------+------------+-------------
+ Moskva    | Viktor     | Solovyov
+ Samara    | Marina     | Lunina
+ Kursk     | Viktor     | Kulakov
+ Kursk     | Marina     | Dorokhova
+ Moskva    | Sergey     | Molotov
+           | Aleksandr  | Aleksandrov
+(6 ёЄЁюъ)
+
+
+skypro=# SELECT city_name, first_name
+skypro-# FROM employee
+skypro-# FULL JOIN city
+skypro-# ON employee.city_id = city.city_id;
+ city_name | first_name
+-----------+------------
+ Moskva    | Viktor
+ Samara    | Marina
+ Kursk     | Viktor
+ Kursk     | Marina
+ Moskva    | Sergey
+           | Aleksandr
+ Volgograd |
+(7 ёЄЁюъ)
+
+
+skypro=# SELECT first_name, city_name
+skypro-# FROM employee
+skypro-# CROSS JOIN city;
+ first_name | city_name
+------------+-----------
+ Viktor     | Moskva
+ Marina     | Moskva
+ Viktor     | Moskva
+ Marina     | Moskva
+ Sergey     | Moskva
+ Aleksandr  | Moskva
+ Viktor     | Samara
+ Marina     | Samara
+ Viktor     | Samara
+ Marina     | Samara
+ Sergey     | Samara
+ Aleksandr  | Samara
+ Viktor     | Kursk
+ Marina     | Kursk
+ Viktor     | Kursk
+ Marina     | Kursk
+ Sergey     | Kursk
+ Aleksandr  | Kursk
+ Viktor     | Volgograd
+ Marina     | Volgograd
+ Viktor     | Volgograd
+ Marina     | Volgograd
+ Sergey     | Volgograd
+ Aleksandr  | Volgograd
+(24 ёЄЁюъш)
